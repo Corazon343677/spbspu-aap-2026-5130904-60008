@@ -1,6 +1,7 @@
 #include <iostream>
 
-int main() {
+int main()
+{
   std::cout << "kovalev.ivan";
   return 0;
 }
