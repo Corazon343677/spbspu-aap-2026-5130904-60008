@@ -2,5 +2,5 @@
 
 int main()
 {
-  std::cout <<inashevskiy.fedor\n>>
+  std::cout <<inashevskiy.fedor\n;
 }
