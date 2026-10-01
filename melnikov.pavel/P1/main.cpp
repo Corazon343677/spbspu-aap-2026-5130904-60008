@@ -45,7 +45,7 @@ int main()
             }
         }
 
-        if (!std::cin)
+        if (std::cin.fail() && !std::cin.eof())
         {
             throw std::invalid_argument("Invalid data format.");
         }
