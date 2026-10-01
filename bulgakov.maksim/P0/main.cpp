@@ -2,6 +2,6 @@
 
 int main()
 {
-  std::cout << "Bulgakov.Maksim\n";
+  std::cout << "bulgakov.maksim\n";
   return 0;
 }
