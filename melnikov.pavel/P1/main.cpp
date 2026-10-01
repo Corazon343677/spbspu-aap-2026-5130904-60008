@@ -1,10 +1,18 @@
+#include <cstdlib>
 #include <iostream>
 #include <stdexcept>
-#include <cstdlib>
 
-bool is_triple(int a, int b, int c)
+namespace
 {
-    if (a <= 0 || b <= 0 || c <= 0)
+    constexpr int kMinPositiveValue = 0;
+    constexpr int kTripleSize = 3;
+    constexpr int kInvalidInputExitCode = 1;
+    constexpr int kRangeErrorExitCode = 2;
+}
+
+bool isTriple(int a, int b, int c)
+{
+    if (a <= kMinPositiveValue || b <= kMinPositiveValue || c <= kMinPositiveValue)
     {
         return false;
     }
@@ -17,7 +25,9 @@ bool is_triple(int a, int b, int c)
 int main()
 {
     int num = 0;
-    int a = 0, b = 0, c = 0;
+    int a = 0;
+    int b = 0;
+    int c = 0;
     int count = 0;
     int size = 0;
 
@@ -31,12 +41,11 @@ int main()
             b = c;
             c = num;
 
-            if (size >= 3)
+            if (size >= kTripleSize)
             {
-                if (is_triple(a, b, c))
+                if (isTriple(a, b, c))
                 {
                     count++;
-
                     a = 0;
                     b = 0;
                     c = 0;
@@ -55,17 +64,17 @@ int main()
             throw std::range_error("No triples found in the sequence.");
         }
 
-        std::cout << count << "\n";
+        std::cout << count << '\n';
         return 0;
     }
     catch (const std::invalid_argument &ex)
     {
-        std::cerr << "Invalid_argument: " << ex.what() << "\n";
-        std::exit(1);
+        std::cerr << "Invalid_argument: " << ex.what() << '\n';
+        std::exit(kInvalidInputExitCode);
     }
     catch (const std::range_error &ex)
     {
-        std::cerr << "Range_error: " << ex.what() << "\n";
-        std::exit(2);
+        std::cerr << "Range_error: " << ex.what() << '\n';
+        std::exit(kRangeErrorExitCode);
     }
 }
