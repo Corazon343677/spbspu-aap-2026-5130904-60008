@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <cstdlib>
 
-bool isTriple(int a = 0, int b = 0, int c = 0);
+bool is_triple(int a = 0, int b = 0, int c = 0);
 
 int main()
 {
@@ -23,7 +23,7 @@ int main()
 
             if (size >= 3)
             {
-                if (isTriple(a, b, c))
+                if (is_triple(a, b, c))
                 {
                     count++;
 
@@ -35,7 +35,7 @@ int main()
             }
         }
 
-        if (std::cin.fail() && !std::cin.eof())
+        if (!std::cin)
         {
             throw std::invalid_argument("Invalid data format.");
         }
@@ -60,7 +60,7 @@ int main()
     }
 }
 
-bool isTriple(int a, int b, int c)
+bool is_triple(int a, int b, int c)
 {
     if (a <= 0 || b <= 0 || c <= 0)
     {
