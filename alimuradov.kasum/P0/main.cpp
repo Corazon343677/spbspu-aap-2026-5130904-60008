@@ -2,5 +2,5 @@
 
 int main()
 {
-
+  std::cout << "alimuradov.kasum\n";
 }
