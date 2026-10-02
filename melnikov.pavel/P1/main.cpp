@@ -53,8 +53,6 @@ bool isTriple(int a, int b, int c)
     return false;
   }
 
-  return (a * a + b * b == c * c)
-    || (b * b + c * c == a * a)
-    || (a * a + c * c == b * b);
+  return (a * a + b * b == c * c) || (b * b + c * c == a * a) || (a * a + c * c == b * b);
 }
 
