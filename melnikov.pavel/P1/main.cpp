@@ -21,28 +21,15 @@ int main()
             b = c;
             c = num;
 
-            if (size >= 3)
+            if (size >= 3 && is_triple(a, b, c))
             {
-                if (is_triple(a, b, c))
-                {
-                    count++;
-
-                    a = 0;
-                    b = 0;
-                    c = 0;
-                    size = 0;
-                }
+                count++;
             }
         }
 
         if (std::cin.fail() && !std::cin.eof())
         {
             throw std::invalid_argument("Invalid data format.");
-        }
-
-        if (count == 0)
-        {
-            throw std::range_error("No triples found in the sequence.");
         }
 
         std::cout << count << "\n";
@@ -52,11 +39,6 @@ int main()
     {
         std::cerr << "Invalid_argument: " << ex.what() << "\n";
         std::exit(1);
-    }
-    catch (const std::range_error &ex)
-    {
-        std::cerr << "Range_error: " << ex.what() << "\n";
-        std::exit(2);
     }
 }
 
