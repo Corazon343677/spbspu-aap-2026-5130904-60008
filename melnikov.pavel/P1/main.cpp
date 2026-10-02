@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 
-constexpr int tripleSize = 3;
+constexpr int triple_size = 3;
 
 bool isTriple(int a = 0, int b = 0, int c = 0);
 
@@ -23,7 +23,7 @@ int main()
       b = c;
       c = num;
 
-      if (size >= tripleSize) {
+      if (size >= triple_size) {
         if (isTriple(a, b, c)) {
           count++;
 
@@ -53,8 +53,8 @@ bool isTriple(int a, int b, int c)
     return false;
   }
 
-  return (a * a + b * b == c * c) ||
-         (b * b + c * c == a * a) ||
-         (a * a + c * c == b * b);
+  return (a * a + b * b == c * c)
+    || (b * b + c * c == a * a)
+    || (a * a + c * c == b * b);
 }
 
