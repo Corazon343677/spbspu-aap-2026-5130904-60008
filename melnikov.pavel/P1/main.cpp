@@ -21,9 +21,17 @@ int main()
             b = c;
             c = num;
 
-            if (size >= 3 && is_triple(a, b, c))
+            if (size >= 3)
             {
-                count++;
+                if (is_triple(a, b, c))
+                {
+                    count++;
+
+                    a = 0;
+                    b = 0;
+                    c = 0;
+                    size = 0;
+                }
             }
         }
 
