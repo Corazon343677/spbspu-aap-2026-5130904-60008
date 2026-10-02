@@ -1,13 +1,17 @@
+#include <cstdlib>
 #include <iostream>
 #include <stdexcept>
-#include <cstdlib>
 
-bool is_triple(int a = 0, int b = 0, int c = 0);
+constexpr int tripleSize = 3;
+
+bool isTriple(int a = 0, int b = 0, int c = 0);
 
 int main()
 {
     int num = 0;
-    int a = 0, b = 0, c = 0;
+    int a = 0;
+    int b = 0;
+    int c = 0;
     int count = 0;
     int size = 0;
 
@@ -21,9 +25,9 @@ int main()
             b = c;
             c = num;
 
-            if (size >= 3)
+            if (size >= tripleSize)
             {
-                if (is_triple(a, b, c))
+                if (isTriple(a, b, c))
                 {
                     count++;
 
@@ -50,7 +54,7 @@ int main()
     }
 }
 
-bool is_triple(int a, int b, int c)
+bool isTriple(int a, int b, int c)
 {
     if (a <= 0 || b <= 0 || c <= 0)
     {
