@@ -3,6 +3,8 @@
 #include <stdexcept>
 
 constexpr int triple_size = 3;
+constexpr int invalid_data_exit_code = 1;
+constexpr int short_sequence_exit_code = 2;
 
 bool isTriple(long long a = 0, long long b = 0, long long c = 0);
 
@@ -47,12 +49,12 @@ int main()
   catch (const std::invalid_argument &ex)
   {
     std::cerr << "Invalid_argument: " << ex.what() << "\n";
-    std::exit(1);
+    std::exit(invalid_data_exit_code);
   }
   catch (const std::range_error &ex)
   {
     std::cerr << "Range_error: " << ex.what() << "\n";
-    std::exit(2);
+    std::exit(short_sequence_exit_code);
   }
 }
 
