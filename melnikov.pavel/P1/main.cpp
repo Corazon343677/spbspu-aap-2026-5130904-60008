@@ -4,52 +4,62 @@
 
 constexpr int triple_size = 3;
 
-bool isTriple(int a = 0, int b = 0, int c = 0);
+bool isTriple(long long a = 0, long long b = 0, long long c = 0);
 
 int main()
 {
-  int num = 0;
-  int a = 0;
-  int b = 0;
-  int c = 0;
+  long long num = 0;
+  long long a = 0;
+  long long b = 0;
+  long long c = 0;
   int count = 0;
   int size = 0;
 
-  try {
-    while (std::cin >> num && num != 0) {
-      size++;
+  try
+  {
+    while (std::cin >> num && num != 0)
+    {
+      ++size;
 
       a = b;
       b = c;
       c = num;
 
-      if (size >= triple_size) {
-        if (isTriple(a, b, c)) {
-          count++;
-
-          a = 0;
-          b = 0;
-          c = 0;
-          size = 0;
-        }
+      if (size >= triple_size && isTriple(a, b, c))
+      {
+        ++count;
       }
     }
 
-    if (std::cin.fail() && !std::cin.eof()) {
+    if (std::cin.fail() && !std::cin.eof())
+    {
       throw std::invalid_argument("Invalid data format.");
+    }
+
+    if (size < triple_size)
+    {
+      throw std::range_error("Sequence is too short.");
     }
 
     std::cout << count << "\n";
     return 0;
-  } catch (const std::invalid_argument &ex) {
+  }
+  catch (const std::invalid_argument &ex)
+  {
     std::cerr << "Invalid_argument: " << ex.what() << "\n";
     std::exit(1);
   }
+  catch (const std::range_error &ex)
+  {
+    std::cerr << "Range_error: " << ex.what() << "\n";
+    std::exit(2);
+  }
 }
 
-bool isTriple(int a, int b, int c)
+bool isTriple(long long a, long long b, long long c)
 {
-  if (a <= 0 || b <= 0 || c <= 0) {
+  if (a <= 0 || b <= 0 || c <= 0)
+  {
     return false;
   }
 
