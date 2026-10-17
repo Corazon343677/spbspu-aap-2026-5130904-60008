@@ -20,14 +20,12 @@ int countEl(const int *arr, int, int);
 
 int main(int argc, char *argv[])
 {
-  if (argc != 4)
-  {
+  if (argc != 4) {
     std::cerr << INC_NUM_OF_ARG << "\n";
     return INVALID_ARGS_EXIT_CODE;
   }
 
-  if (std::string(argv[1]) != "1" && std::string(argv[1]) != "2")
-  {
+  if (std::string(argv[1]) != "1" && std::string(argv[1]) != "2") {
     std::cerr << INC_NUM << "\n";
     return INVALID_ARGS_EXIT_CODE;
   }
@@ -35,39 +33,29 @@ int main(int argc, char *argv[])
   std::ifstream input(argv[2]);
   std::ofstream output(argv[3]);
 
-  if (!input || !output)
-  {
+  if (!input || !output) {
     std::cerr << INV_VAL << "\n";
     return INVALID_DATA_EXIT_CODE;
   }
 
   int row = 0, col = 0, res = 0;
 
-  try
-  {
-    if (!(input >> row >> col) || row < 0 || col < 0)
-    {
+  try {
+    if (!(input >> row >> col) || row < 0 || col < 0) {
       throw std::invalid_argument(INV_VAL);
     }
 
-    if (std::string(argv[1]) == "1")
-    {
+    if (std::string(argv[1]) == "1") {
       res = getFixArray(input, row, col);
-    }
-    else
-    {
+    } else {
       res = getDynamicArray(input, row, col);
     }
 
     output << std::to_string(res) << "\n";
-  }
-  catch (const std::invalid_argument &ex)
-  {
+  } catch (const std::invalid_argument &ex) {
     std::cerr << "Invalid_argument: " << ex.what() << "\n";
     return INVALID_DATA_EXIT_CODE;
-  }
-  catch (const std::bad_alloc &)
-  {
+  } catch (const std::bad_alloc &) {
     std::cerr << "Memory allocation failed\n";
     return INVALID_DATA_EXIT_CODE;
   }
@@ -77,19 +65,15 @@ int main(int argc, char *argv[])
 
 int getFixArray(std::ifstream &input, int row, int col)
 {
-  if (row != 0 && col > MAX_SIZE_ARR / row)
-  {
+  if (row != 0 && col > MAX_SIZE_ARR / row) {
     throw std::invalid_argument(INV_VAL);
   }
 
   int arr[MAX_SIZE_ARR] = {0};
 
-  for (int i = 0; i < row; ++i)
-  {
-    for (int j = 0; j < col; ++j)
-    {
-      if (!(input >> arr[i * col + j]))
-      {
+  for (int i = 0; i < row; ++i) {
+    for (int j = 0; j < col; ++j) {
+      if (!(input >> arr[i * col + j])) {
         throw std::invalid_argument(INV_VAL);
       }
     }
@@ -100,20 +84,20 @@ int getFixArray(std::ifstream &input, int row, int col)
 
 int getDynamicArray(std::ifstream &input, int row, int col)
 {
-  if (row < 0 || col < 0 || (col != 0 && row > INT_MAX / col))
-  {
+  if (row < 0 || col < 0 || (col != 0 && row > INT_MAX / col)) {
     throw std::invalid_argument(INV_VAL);
+  }
+
+  if (row == 0 || col == 0) {
+    return 0;
   }
 
   const int size = row * col;
   int *const arr = new int[size]{0};
 
-  for (int i = 0; i < row; ++i)
-  {
-    for (int j = 0; j < col; ++j)
-    {
-      if (!(input >> arr[i * col + j]))
-      {
+  for (int i = 0; i < row; ++i) {
+    for (int j = 0; j < col; ++j) {
+      if (!(input >> arr[i * col + j])) {
         delete[] arr;
         throw std::invalid_argument(INV_VAL);
       }
@@ -129,27 +113,22 @@ int getDynamicArray(std::ifstream &input, int row, int col)
 
 int countEl(const int *arr, int row, int col)
 {
-  if (row == 0 || col == 0)
-  {
+  if (row == 0 || col == 0) {
     return 0;
   }
 
-  if (row == 1 && col == 1)
-  {
+  if (row == 1 && col == 1) {
     return arr[0];
   }
 
   int res = INT_MIN;
 
-  if (row == col)
-  {
-    for (int sj = 0; sj < col - 1; ++sj)
-    {
+  if (row == col) {
+    for (int sj = 0; sj < col - 1; ++sj) {
       int sum = 0;
       int ci = 0, cj = sj;
 
-      while (ci < row && cj >= 0)
-      {
+      while (ci < row && cj >= 0) {
         sum += arr[ci * col + cj];
         ++ci;
         --cj;
@@ -158,13 +137,11 @@ int countEl(const int *arr, int row, int col)
       res = (res > sum ? res : sum);
     }
 
-    for (int si = 1; si < row; ++si)
-    {
+    for (int si = 1; si < row; ++si) {
       int sum = 0;
       int ci = si, cj = col - 1;
 
-      while (ci < row && cj >= 0)
-      {
+      while (ci < row && cj >= 0) {
         sum += arr[ci * col + cj];
         ++ci;
         --cj;
@@ -172,16 +149,12 @@ int countEl(const int *arr, int row, int col)
 
       res = (res > sum ? res : sum);
     }
-  }
-  else
-  {
-    for (int sj = 0; sj < col; ++sj)
-    {
+  } else {
+    for (int sj = 0; sj < col; ++sj) {
       int sum = 0;
       int ci = 0, cj = sj;
 
-      while (ci < row && cj >= 0)
-      {
+      while (ci < row && cj >= 0) {
         sum += arr[ci * col + cj];
         ++ci;
         --cj;
@@ -190,13 +163,11 @@ int countEl(const int *arr, int row, int col)
       res = (res > sum ? res : sum);
     }
 
-    for (int si = 1; si < row; ++si)
-    {
+    for (int si = 1; si < row; ++si) {
       int sum = 0;
       int ci = si, cj = col - 1;
 
-      while (ci < row && cj >= 0)
-      {
+      while (ci < row && cj >= 0) {
         sum += arr[ci * col + cj];
         ++ci;
         --cj;
