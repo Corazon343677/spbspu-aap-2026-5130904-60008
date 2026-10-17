@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -18,165 +19,174 @@ int countEl(const int *arr, int, int);
 
 int main(int argc, char *argv[])
 {
-    if (argc != 4)
+  if (argc != 4)
+  {
+    std::cerr << INC_NUM_OF_ARG << "\n";
+    std::exit(INVALID_ARGS_EXIT_CODE);
+  }
+  if (std::string(argv[1]) != "1" && std::string(argv[1]) != "2")
+  {
+    std::cerr << INC_NUM << "\n";
+    std::exit(INVALID_ARGS_EXIT_CODE);
+  }
+
+  std::ifstream input(argv[2]);
+  std::ofstream output(argv[3]);
+
+  int row = 0, col = 0, res = 0;
+
+  try
+  {
+    if (!(input >> row >> col) || row < 0 || col < 0)
     {
-        std::cerr << INC_NUM_OF_ARG << "\n";
-        std::exit(INVALID_ARGS_EXIT_CODE);
+      throw std::invalid_argument(INV_VAL);
     }
-    if (std::string(argv[1]) != "1" && std::string(argv[1]) != "2")
+
+    if (std::string(argv[1]) == "1")
     {
-        std::cerr << INC_NUM << "\n";
-        std::exit(INVALID_ARGS_EXIT_CODE);
+      res = getFixArray(input, row, col);
     }
-
-    std::ifstream input(argv[2]);
-    std::ofstream output(argv[3]);
-
-    int row = 0, col = 0, res = 0;
-
-    try
+    else
     {
-        if (!(input >> row >> col) || row < 0 || col < 0)
-        {
-            throw std::invalid_argument(INV_VAL);
-        }
-
-        if (std::string(argv[1]) == "1")
-        {
-            res = getFixArray(input, row, col);
-        }
-        else
-        {
-            res = getDynamicArray(input, row, col);
-        }
-
-        output << std::to_string(res) << "\n";
+      res = getDynamicArray(input, row, col);
     }
-    catch (const std::invalid_argument &ex)
-    {
-        std::cerr << "Invalid_argument: " << ex.what() << "\n";
-        std::exit(INVALID_DATA_EXIT_CODE);
-    }
-    std::exit(EXIT_SUCCESS);
+
+    output << std::to_string(res) << "\n";
+  }
+  catch (const std::invalid_argument &ex)
+  {
+    std::cerr << "Invalid_argument: " << ex.what() << "\n";
+    std::exit(INVALID_DATA_EXIT_CODE);
+  }
+  std::exit(EXIT_SUCCESS);
 }
 
 int getFixArray(std::ifstream &input, int row, int col)
 {
-    if (row != 0 && col > MAX_SIZE_ARR / row)
+  if (row != 0 && col > MAX_SIZE_ARR / row)
+  {
+    throw std::invalid_argument(INV_VAL);
+  }
+
+  int arr[MAX_SIZE_ARR] = {0};
+
+  for (int i = 0; i < row; ++i)
+  {
+    for (int j = 0; j < col; ++j)
     {
+      if (!(input >> arr[i * col + j]))
+      {
         throw std::invalid_argument(INV_VAL);
+      }
     }
+  }
 
-    int arr[MAX_SIZE_ARR] = {0};
-
-    for (int i = 0; i < row; ++i)
-    {
-        for (int j = 0; j < col; ++j)
-        {
-            if (!(input >> arr[i * col + j]))
-            {
-                throw std::invalid_argument(INV_VAL);
-            }
-        }
-    }
-
-    return countEl(arr, row, col);
+  return countEl(arr, row, col);
 }
 
 int getDynamicArray(std::ifstream &input, int row, int col)
 {
-    int *arr = new int[row * col]{0};
+  if (col != 0 && row > INT_MAX / col)
+  {
+    throw std::invalid_argument(INV_VAL);
+  }
 
-    for (int i = 0; i < row; ++i)
+  int size = row * col;
+  int *const arr = new int[size]{0};
+
+  for (int i = 0; i < row; ++i)
+  {
+    for (int j = 0; j < col; ++j)
     {
-        for (int j = 0; j < col; ++j)
-        {
-            if (!(input >> arr[i * col + j]))
-            {
-                delete[] arr;
-                throw std::invalid_argument(INV_VAL);
-            }
-        }
+      if (!(input >> arr[i * col + j]))
+      {
+        delete[] arr;
+        throw std::invalid_argument(INV_VAL);
+      }
     }
+  }
 
-    int res = countEl(arr, row, col);
+  const int res = countEl(arr, row, col);
 
-    delete[] arr;
+  delete[] arr;
 
-    return res;
+  return res;
 }
 
 int countEl(const int *arr, int row, int col)
 {
-    if (row == 0 || col == 0)
+  if (row == 0 || col == 0)
+  {
+    return 0;
+  }
+  if (row == 1 && col == 1)
+  {
+    return arr[0];
+  }
+
+  int res = INT_MIN;
+
+  if (row == col)
+  {
+    for (int sj = 0; sj < (col - 1); ++sj)
     {
-        return 0;
-    }
-    if (row == 1 && col == 1)
-    {
-        return arr[0];
-    }
+      int sum = 0;
+      int ci = 0, cj = sj;
 
-    int res = INT_MIN;
-
-    if (row == col)
-    {
-        for (int sj = 0; sj < (col - 1); ++sj)
-        {
-            int sum = 0;
-            int ci = 0, cj = sj;
-
-            while (ci < row && cj >= 0)
-            {
-                sum += arr[ci * col + cj];
-                ++ci;
-                --cj;
-            }
-            res = (res > sum ? res : sum);
-        }
-        for (int si = 1; si < row; ++si)
-        {
-            int sum = 0;
-            int ci = si, cj = col - 1;
-
-            while (ci < row && cj >= 0)
-            {
-                sum += arr[ci * col + cj];
-                ++ci;
-                --cj;
-            }
-            res = (res > sum ? res : sum);
-        }
-    }
-    else
-    {
-        for (int sj = 0; sj < col; ++sj)
-        {
-            int sum = 0;
-            int ci = 0, cj = sj;
-
-            while (ci < row && cj >= 0)
-            {
-                sum += arr[ci * col + cj];
-                ++ci;
-                --cj;
-            }
-            res = (res > sum ? res : sum);
-        }
-        for (int si = 1; si < row; ++si)
-        {
-            int sum = 0;
-            int ci = si, cj = col - 1;
-
-            while (ci < row && cj >= 0)
-            {
-                sum += arr[ci * col + cj];
-                ++ci;
-                --cj;
-            }
-            res = (res > sum ? res : sum);
-        }
+      while (ci < row && cj >= 0)
+      {
+        sum += arr[ci * col + cj];
+        ++ci;
+        --cj;
+      }
+      res = (res > sum ? res : sum);
     }
 
-    return res;
+    for (int si = 1; si < row; ++si)
+    {
+      int sum = 0;
+      int ci = si, cj = col - 1;
+
+      while (ci < row && cj >= 0)
+      {
+        sum += arr[ci * col + cj];
+        ++ci;
+        --cj;
+      }
+      res = (res > sum ? res : sum);
+    }
+  }
+  else
+  {
+    for (int sj = 0; sj < col; ++sj)
+    {
+      int sum = 0;
+      int ci = 0, cj = sj;
+
+      while (ci < row && cj >= 0)
+      {
+        sum += arr[ci * col + cj];
+        ++ci;
+        --cj;
+      }
+      res = (res > sum ? res : sum);
+    }
+
+    for (int si = 1; si < row; ++si)
+    {
+      int sum = 0;
+      int ci = si, cj = col - 1;
+
+      while (ci < row && cj >= 0)
+      {
+        sum += arr[ci * col + cj];
+        ++ci;
+        --cj;
+      }
+      res = (res > sum ? res : sum);
+    }
+  }
+
+  return res;
 }
+
