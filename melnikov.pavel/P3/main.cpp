@@ -117,63 +117,35 @@ int countEl(const int *arr, int row, int col)
   }
 
   if (row == 1 && col == 1) {
-    return arr[0];
+    throw std::invalid_argument(INV_VAL);
   }
 
-  int res = INT_MIN;
+  int res = arr[0];
 
-  if (row == col) {
-    for (int sj = 0; sj < col - 1; ++sj) {
-      int sum = 0;
-      int ci = 0, cj = sj;
+  for (int sj = 0; sj < col - 1; ++sj) {
+    int sum = 0;
+    int ci = 0, cj = sj;
 
-      while (ci < row && cj >= 0) {
-        sum += arr[ci * col + cj];
-        ++ci;
-        --cj;
-      }
-
-      res = (res > sum ? res : sum);
+    while (ci < row && cj >= 0) {
+      sum += arr[ci * col + cj];
+      ++ci;
+      --cj;
     }
 
-    for (int si = 1; si < row; ++si) {
-      int sum = 0;
-      int ci = si, cj = col - 1;
+    res = (res > sum ? res : sum);
+  }
 
-      while (ci < row && cj >= 0) {
-        sum += arr[ci * col + cj];
-        ++ci;
-        --cj;
-      }
+  for (int si = 1; si < row; ++si) {
+    int sum = 0;
+    int ci = si, cj = col - 1;
 
-      res = (res > sum ? res : sum);
-    }
-  } else {
-    for (int sj = 0; sj < col - 1; ++sj) {
-      int sum = 0;
-      int ci = 0, cj = sj;
-
-      while (ci < row && cj >= 0) {
-        sum += arr[ci * col + cj];
-        ++ci;
-        --cj;
-      }
-
-      res = (res > sum ? res : sum);
+    while (ci < row && cj >= 0) {
+      sum += arr[ci * col + cj];
+      ++ci;
+      --cj;
     }
 
-    for (int si = 1; si < row; ++si) {
-      int sum = 0;
-      int ci = si, cj = col - 1;
-
-      while (ci < row && cj >= 0) {
-        sum += arr[ci * col + cj];
-        ++ci;
-        --cj;
-      }
-
-      res = (res > sum ? res : sum);
-    }
+    res = (res > sum ? res : sum);
   }
 
   return res;
