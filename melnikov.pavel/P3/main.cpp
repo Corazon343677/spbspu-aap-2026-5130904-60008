@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -150,7 +149,7 @@ int countEl(const int *arr, int row, int col)
       res = (res > sum ? res : sum);
     }
   } else {
-    for (int sj = 0; sj < col; ++sj) {
+    for (int sj = 0; sj < col - 1; ++sj) {
       int sum = 0;
       int ci = 0, cj = sj;
 
